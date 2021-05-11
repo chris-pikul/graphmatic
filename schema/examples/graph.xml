@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<graph>
+    <title>My First Graph</title>
+    <version>1.0.30.1234</version>
+    <author name="Chris" email="chris@example.com" />
+    <license name="GNU General Public License 3.0" abbreviation="GPLv3" src="LICENSE" />
+
+    <functions>
+        <function name="sayHello" displayName="Say Hello" developmentOnly="true">
+            <documentation>
+                <summary>Says hello!</summary>
+                <description>Uses the standard console output to say a message, in this case "hello", using the name provided by the first input.</description>
+            </documentation>
+            <inputs>
+                <input name="Name" type="string" required="true">
+                    <documentation>
+                        <summary>The name to use</summary>
+                        <example>"Bob", or "Henry"</example>
+                    </documentation>
+                </input>
+            </inputs>
+            <code lang="JS">
+                function sayHello(name) { console.log(`Hello, ${name}!`); }
+            </code>
+        </function>
+
+        <function name="isPrime" displayName="Check If Prime" isPure="true">
+            <documentation>
+                <summary>Check if number is prime</summary>
+                <description>Check if the given number, is a prime number</description>
+            </documentation>
+            <input name="val" displayName="Value" type="number" />
+
+            <call target="std.math.sqrt">
+                <in target="i" from="val" />
+                <out to="wire1" />
+            </call>
+        </function>
+
+        <function name="getPrime" displayName="Get Nth Prime" isPure="true">
+            <documentation>
+                <summary>Finds the Nth Prime</summary>
+                <description>Attempts to calculate the "nth" prime number, where N is the provided input.</description>
+            </documentation>
+            <input name="inN" displayName="Index" type="number" required="true">
+                <documentation>
+                    <summary>The requested index</summary>
+                </documentation>
+            </input>
+            <output name="outPrime" displayName="Prime" type="number">
+                <documentation>
+                    <summary>The resulting prime number</summary>
+                </documentation>
+            </output>
+            <contents>
+                <local name="primes" type="number[]" value="[2, 3]" />
+                <local name="j" type="number" value="5" />
+
+                <subroutine name="isPrime">
+                    <input name="val" type="number" />
+                    <input name="primes" type="number[]"/>
+                    <contents>
+                        <local name="k" type="number" value="1" />
+                        <local name="p" type="number" value="3" />
+                        <local name="limit" type="number" />
+                    </contents>
+                </subroutine>
+            </contents>
+            <code lang="JS">
+                function getPrime(n) {
+                    let primes = [2, 3];
+                    let j = 5;
+
+                    const isPrime = val => {
+                        let k = 1;
+                        let p = 3;
+                        let limit = Math.ceil( Math.sqrt(val) );
+
+                        while(p <= limit) {
+                            if(j % p === 0)
+                                return false;
+                            k += 1;
+                            p = primes[k];
+                        }
+                        return true;
+                    };
+
+                    for(let i = 2; i <= j; i++) {
+                        while(!isPrime(j))
+                            j += 2;
+
+                        primes.push(j);
+                        j += 2;
+                    }
+
+                    return primes[n - 1];
+                }
+            </code>
+        </function>
+    </functions>
+
+    <changes>
+        <change timestamp="2021-01-01T08:30:15">
+            <author name="Chris" />
+            <message>Wrote the version 1.0 schema file</message>
+        </change>
+    </changes>
+</graph>

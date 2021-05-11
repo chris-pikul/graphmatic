@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="EN" elementFormDefault="qualified">
+
+<!-- Data Types -->
+
+<xs:simpleType name="colorValue">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="#?[A-Za-z0-9]{6}"/>
+    </xs:restriction>
+</xs:simpleType>
+
+<!-- Outline -->
+
+<xs:element name="comment">
+    <xs:complexType>
+        
+        <xs:attribute name="color" type="colorValue" />
+
+        <xs:sequence>
+            <xs:element name="comment-text" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:extension base="xs:string">
+                        <xs:attribute name="author" type="xs:string" />
+                        <xs:attribute name="timestamp" type="xs:dateTime" />
+                    </xs:extension>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:any minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+
+    </xs:complexType>
+</xs:element>
+
+</xs:schema>
