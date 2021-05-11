@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project xmlns="Graphmatic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaLocation="https://www.w3schools.com/xml project.xsd">
+    <title>Example Project</title>
+    <version>1.0.30.1234</version>
+    <author name="Chris" email="chris@example.com" />
+    <license name="GNU General Public License 3.0" abbreviation="GPLv3" src="LICENSE" />
+    
+    <graphs>
+        <graph src="graph.xml" />
+    </graphs>
+
+    <targets>
+        <execution platform="all" entry="graph.xml#main" />
+        <execution platform="web" entry="graph.xml#webMain" />
+    </targets>
+
+    <changes>
+        <change timestamp="2021-01-01T08:30:15" hash="76C0E8045138052A2F6BF2D474A15E214F83ABF9">
+            <author name="Chris" />
+            <message>Wrote the version 1.0 schema file</message>
+            <files>
+                <file src="project.xsd" hash="76C0E8045138052A2F6BF2D474A15E214F83ABF9" />
+            </files>
+        </change>
+    </changes>
+</project>

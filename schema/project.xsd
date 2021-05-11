@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="EN" attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xs:element name="project" minOccurs="1" maxOccurs="1">
+    <xs:complexType>
+
+        <xs:sequence>
+    
+            <xs:element name="title" type="xs:token" />
+
+            <xs:element name="version">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="(?:(\d+)\.){0,3}(\d+)" />
+                        </xs:restriction>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="author" type="authorType" />
+
+            <xs:element name="license">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:token" />
+                    <xs:attribute name="abbreviation" type="xs:token" />
+                    <xs:attribute name="src" type="xs:anyURI" />
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="graphs">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="graph" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="src" type="xs:anyURI" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="targets">
+                <xs:complexType>
+                    <xs:all>
+                        <xs:element name="execution" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="platform" type="executionPlatformType" use="required" />
+                                <xs:attribute name="entry" type="xs:anyURI" use="required" />
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:all>
+                </xs:complexType>
+
+                <xs:unique name="uniqueExecutionPlatform">
+                    <xs:selector xpath="execution" />
+                    <xs:field xpath="@platform" />
+                </xs:unique>
+            </xs:element>
+
+            <xs:element name="changes">
+                <xs:complexType>
+                    <xs:sequence>
+
+                        <xs:element name="change" minOccurs="1" maxOccurs="unbounded">
+                            <xs:complexType>
+
+                                <xs:attribute name="timestamp" type="xs:datetime" use="required" />
+                                <xs:attribute name="hash" type="xs:hexBinary" />
+
+                                <xs:sequence>
+
+                                    <xs:element name="author" type="authorType" />
+
+                                    <xs:element name="message" type="xs:string" />
+
+                                    <xs:element name="files">
+                                        <xs:complexType>
+                                            <xs:sequence>
+
+                                                <xs:element name="file">
+                                                    <xs:complexType>
+                                                        <xs:attribute name="src" type="xs:anyURI" use="required" />
+                                                        <xs:attribute name="hash" type="xs:hexBinary" />
+                                                    </xs:complexType>
+                                                </xs:element>
+
+                                            </xs:sequence>
+                                            
+                                            <xs:unique name="uniqueFileSRC">
+                                                <xs:selector xpath="file" />
+                                                <xs:field xpath="@src" />
+                                            </xs:unique>
+
+                                        </xs:complexType>
+                                    </xs:element>
+
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+
+                    </xs:sequence>
+                </xs:complexType>
+
+                <xs:unique name="uniqueChangeTimestamp">
+                    <xs:selector xpath="change" />
+                    <xs:field xpath="@timestamp" />
+                </xs:unique>
+                <xs:unique name="uniqueChangeHash">
+                    <xs:selector xpath="change" />
+                    <xs:field xpath="@hash" />
+                </xs:unique>
+
+            </xs:element>
+    
+        </xs:sequence>
+    
+    </xs:complexType>
+</xs:element>
+
+<complexType name="authorType">
+    <xs:attribute name="name" type="xs:token" />
+    <xs:attribute name="email" type="xs:string" />
+</complexType>
+
+<simpleType name="executionPlatformType">
+    <xs:restriction base="xs:string">
+        <xs:enumeration value="web" />
+        <xs:enumeration value="windows" />
+        <xs:enumeration value="linux" />
+        <xs:enumeration value="mac" />
+        <xs:enumeration value="android" />
+        <xs:enumeration value="ios" />
+        <xs:enumeration value="all" />
+    </xs:restriction>
+</simpleType>
+
+</xs:schema>
